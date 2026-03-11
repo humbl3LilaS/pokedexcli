@@ -3,7 +3,7 @@ package callback
 type CliCommand struct {
 	Name string
 	Desctiption string
-	CallBack func()
+	CallBack func() error
 }
 
 func GetCommands() map[string]CliCommand {
@@ -17,6 +17,11 @@ func GetCommands() map[string]CliCommand {
 			Name: "exit",
 			Desctiption: "Turnoff the Pokedex CLI.",
 			CallBack: callbackExit,
+		},
+		"map": {
+			Name: "map",
+			Desctiption: "Output the LocationAreas",
+			CallBack: callbackMap,
 		},
 	}
 }

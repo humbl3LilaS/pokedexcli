@@ -5,11 +5,13 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/humbl3LilaS/pokedexcli/pkg/callback"
+	customTypes "github.com/humbl3LilaS/pokedexcli/pkg/types"
 	"github.com/humbl3LilaS/pokedexcli/pkg/util"
 )
 
-func StartRepl(){
+
+
+func StartRepl(conf *customTypes.AppConfig){
 	scanner := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print(" >")
@@ -23,7 +25,7 @@ func StartRepl(){
 		}
 
 		inputCmd := clean[0]
-		availCmd := callback.GetCommands()
+		availCmd := util.GetCommands()
 
 		cmd, ok := availCmd[inputCmd]
 
@@ -32,7 +34,7 @@ func StartRepl(){
 			continue
 		}
 
-		cmd.CallBack();
+		cmd.CallBack(conf);
 
 	}
 }

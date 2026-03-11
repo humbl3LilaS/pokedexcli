@@ -4,33 +4,20 @@ import (
 	"fmt"
 	"log"
 	"os"
-
-	pokeapi "github.com/humbl3LilaS/pokedexcli/api"
+	customTypes "github.com/humbl3LilaS/pokedexcli/pkg/types"
 )
 
-func callbackHelp() error {
-	fmt.Println("Welcome To The Pokedex Cli Menu....")
-	fmt.Println("Available Command Options:")
-	availCmds := GetCommands()
 
-	for _, cmd := range availCmds {
-		fmt.Printf("- %s: %s\n", cmd.Name, cmd.Desctiption)
-	}
-
-	return nil
-}
-
-func callbackExit() error {
+func CallbackExit(conf *customTypes.AppConfig) error {
 	fmt.Println("Exiting Pokedex CLI....")
 	os.Exit(0)
 	return nil
 }
 
 
-func callbackMap() error {
-	apiClient := pokeapi.NewClient()
+func CallbackMap(conf *customTypes.AppConfig) error {
 
-	resp, err := apiClient.ListLocationAreas()
+	resp, err := conf.ApiClient.ListLocationAreas()
 
 	if err != nil {
 		log.Fatal(err)

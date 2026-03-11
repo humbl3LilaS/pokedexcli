@@ -1,8 +1,17 @@
 package main
 
-import "github.com/humbl3LilaS/pokedexcli/cmd"
+import (
+	pokeapi "github.com/humbl3LilaS/pokedexcli/api"
+	"github.com/humbl3LilaS/pokedexcli/cmd"
+	customTypes "github.com/humbl3LilaS/pokedexcli/pkg/types"
+)
+
 
 
 func main() {
-	cmd.StartRepl()
+	appConf := customTypes.AppConfig{
+		ApiClient: pokeapi.NewClient(),
+	}
+
+	cmd.StartRepl(&appConf)
 }

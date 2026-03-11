@@ -1,7 +1,8 @@
 package main
 
-import "fmt"
+import "github.com/humbl3LilaS/pokedexcli/cmd"
+
 
 func main() {
-	fmt.Println("Hello Pokedex")
+	cmd.StartRepl()
 }

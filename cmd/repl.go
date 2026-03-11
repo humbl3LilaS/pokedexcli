@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	util "github.com/humbl3LilaS/pokedexcli/helper"
+	"github.com/humbl3LilaS/pokedexcli/pkg/callback"
+	"github.com/humbl3LilaS/pokedexcli/pkg/util"
 )
 
 func StartRepl(){
@@ -21,19 +22,17 @@ func StartRepl(){
 			continue
 		}
 
-		command := clean[0]
+		inputCmd := clean[0]
+		availCmd := callback.GetCommands()
 
-		switch command {
-		case "help":
-			fmt.Println("Welcome To The Pokedex Cli Menu....")
-			fmt.Println("Available Command Options:")
-			fmt.Println("- help: Print out the available command options")
-			fmt.Println("- exit: Exit from Pokedex Cli")
-		case "exit":
-			os.Exit(0)
-		default:
-			fmt.Println("Invalid Command. Use `help` to check for available options.")
+		cmd, ok := availCmd[inputCmd]
+
+		if !ok {
+			fmt.Println("Invalid Command. Please enter `help` to see all available command")
+			continue
 		}
+
+		cmd.CallBack();
 
 	}
 }

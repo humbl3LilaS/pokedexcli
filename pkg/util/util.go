@@ -7,3 +7,4 @@ func CleanInput(str string) []string {
 	words :=strings.Fields(lowered)
 	return words
 }
+

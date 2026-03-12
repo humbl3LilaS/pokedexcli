@@ -41,8 +41,13 @@ func GetCommands() map[string]customTypes.CliCommand {
 		},
 		"map": {
 			Name: "map",
-			Desctiption: "Output the LocationAreas",
+			Desctiption: "Output the Next Page of LocationAreas",
 			CallBack: callback.CallbackMap,
+		},
+		"mapb" : {
+			Name: "mapb",
+			Desctiption: "Output the Previous Page of LocationAreas",
+			CallBack:callback.CallBackMapBack,
 		},
 	}
 }

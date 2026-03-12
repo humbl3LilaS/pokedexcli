@@ -1,9 +1,14 @@
 package pokeapi
 
-import "net/http"
+import (
+	"net/http"
+
+	pokecache "github.com/humbl3LilaS/pokedexcli/cache"
+)
 
 
 type Client struct {
+	Cache pokecache.Cache
 	HttpClient http.Client
 }
 

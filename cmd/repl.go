@@ -34,7 +34,11 @@ func StartRepl(conf *customTypes.AppConfig){
 			continue
 		}
 
-		cmd.CallBack(conf);
+		err :=	cmd.CallBack(conf);
+
+		if err != nil {
+			fmt.Println(err)
+		}
 
 	}
 }

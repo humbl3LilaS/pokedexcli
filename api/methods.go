@@ -70,3 +70,45 @@ func (c *Client) ListLocationAreas(url *string) (LocationAreaResp, error) {
 
 	return  locationAreas, nil
 }
+
+func (c *Client) GetLocationArea(locId string) (LocationArea,error) {
+	endPoint := "/location-area/"
+	fullURL := baseURL + endPoint + locId
+
+	req, err := http.NewRequest("GET", fullURL, nil)
+
+	if err != nil {
+		return LocationArea{}, nil
+	}
+
+	resp, err := c.HttpClient.Do(req)
+
+	if err != nil {
+		return LocationArea{}, nil
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode > 399 {
+		return LocationArea{}, fmt.Errorf("Bad Status Code: %v", resp.StatusCode)
+	}
+
+	data, err := io.ReadAll(resp.Body)
+
+	if err != nil {
+		return LocationArea{}, err
+	}
+
+	locationAreas := LocationArea{}
+
+	err = json.Unmarshal(data, &locationAreas)
+
+	if err != nil {
+		return LocationArea{}, err
+	}
+	
+	// store the data in cache
+	// c.Cache.Add(fullURL, data)
+
+	return  locationAreas, nil
+}

@@ -5,7 +5,13 @@ import pokeapi "github.com/humbl3LilaS/pokedexcli/api"
 type CliCommand struct {
 	Name string
 	Desctiption string
-	CallBack func(*AppConfig) error
+	CallBack func(CmdArg) error
+	MaxArg int
+}
+
+type CmdArg struct {
+	AppConf *AppConfig
+	Args []string
 }
 
 type AppConfig struct{

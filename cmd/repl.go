@@ -34,7 +34,21 @@ func StartRepl(conf *customTypes.AppConfig){
 			continue
 		}
 
-		err :=	cmd.CallBack(conf);
+		if len(clean) - 1 != cmd.MaxArg {
+			fmt.Printf("Invalid Number of Arguments. `%s` only accepts %d argument(s).\n", cmd.Name, cmd.MaxArg)
+			continue
+		}
+
+		args := []string{}
+
+		if cmd.MaxArg > 0 {
+			args = clean[1: cmd.MaxArg + 1]
+		}
+
+		err :=	cmd.CallBack(customTypes.CmdArg{
+			AppConf: conf,
+			Args: args,
+		});
 
 		if err != nil {
 			fmt.Println(err)

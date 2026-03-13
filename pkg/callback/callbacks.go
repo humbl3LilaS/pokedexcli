@@ -10,16 +10,16 @@ import (
 )
 
 
-func CallbackExit(conf *customTypes.AppConfig) error {
+func CallbackExit(arg customTypes.CmdArg) error {
 	fmt.Println("Exiting Pokedex CLI....")
 	os.Exit(0)
 	return nil
 }
 
 
-func CallbackMap(conf *customTypes.AppConfig) error {
+func CallbackMap(arg customTypes.CmdArg) error {
 
-	resp, err := conf.ApiClient.ListLocationAreas(conf.NextLocUrl)
+	resp, err := arg.AppConf.ApiClient.ListLocationAreas(arg.AppConf.NextLocUrl)
 
 	if err != nil {
 		log.Fatal(err)
@@ -32,19 +32,19 @@ func CallbackMap(conf *customTypes.AppConfig) error {
 		fmt.Printf(" - %s\n", loc.Name)
 	}
 
-	conf.NextLocUrl = resp.Next
-	conf.PrevLocUrl = resp.Previous
+	arg.AppConf.NextLocUrl = resp.Next
+	arg.AppConf.PrevLocUrl = resp.Previous
 
 	return nil
 }
 
-func CallBackMapBack(conf *customTypes.AppConfig) error {
+func CallbackMapPrevious(arg customTypes.CmdArg) error {
 
-	if conf.PrevLocUrl == nil {
+	if arg.AppConf.PrevLocUrl == nil {
 		return errors.New("You are on the first page")
 	}
 
-	resp, err := conf.ApiClient.ListLocationAreas(conf.PrevLocUrl)
+	resp, err := arg.AppConf.ApiClient.ListLocationAreas(arg.AppConf.PrevLocUrl)
 
 	if err != nil {
 		log.Fatal(err)
@@ -57,8 +57,25 @@ func CallBackMapBack(conf *customTypes.AppConfig) error {
 		fmt.Printf(" - %s\n", loc.Name)
 	}
 
-	conf.NextLocUrl = resp.Next
-	conf.PrevLocUrl = resp.Previous
+	arg.AppConf.NextLocUrl = resp.Next
+	arg.AppConf.PrevLocUrl = resp.Previous
+
+	return nil
+}
+
+func CallbackExplore(arg customTypes.CmdArg) error {
+
+	args := arg.Args
+
+	resp , err := arg.AppConf.ApiClient.GetLocationArea(args[0])
+
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	resp.PrintDetail()
+
 
 	return nil
 }

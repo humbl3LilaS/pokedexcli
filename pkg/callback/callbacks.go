@@ -50,12 +50,8 @@ func CallbackMapPrevious(arg customTypes.CmdArg) error {
 		log.Fatal(err)
 		return err
 	}
-
-	fmt.Println("Location Areas: ")
-
-	for _, loc := range resp.Results {
-		fmt.Printf(" - %s\n", loc.Name)
-	}
+	
+	resp.PrintDetail()
 
 	arg.AppConf.NextLocUrl = resp.Next
 	arg.AppConf.PrevLocUrl = resp.Previous

@@ -76,6 +76,17 @@ type LocationArea struct {
 	} `json:"pokemon_encounters"`
 }
 
+
+func (loc LocationAreaResp) PrintDetail() {
+	fmt.Println("Location Areas: ")
+
+	for _, loc := range loc.Results {
+		fmt.Printf(" - %s\n", loc.Name)
+	}
+
+}
+
+
 func (loc LocationArea) PrintDetail() {
 	fmt.Println("Location Infos: ")
 
@@ -85,6 +96,15 @@ func (loc LocationArea) PrintDetail() {
 
 	for _, val := range loc.PokemonEncounters {
 		fmt.Printf(" - %s\n", val.Pokemon.Name)
+	}
+
+	fmt.Println("Encounter Methods: ")
+
+	for _,val := range loc.EncounterMethodRates {
+		fmt.Printf(" - %s\n", val.EncounterMethod.Name)
+		for _, ver := range val.VersionDetails{
+			fmt.Printf("  - Version: %s, Rate: %d\n", ver.Version.Name, ver.Rate)
+		}
 	}
 
 }

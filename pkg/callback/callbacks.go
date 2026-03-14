@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 
 	customTypes "github.com/humbl3LilaS/pokedexcli/pkg/types"
@@ -72,6 +73,31 @@ func CallbackExplore(arg customTypes.CmdArg) error {
 
 	resp.PrintDetail()
 
+
+	return nil
+}
+
+func CallbackCatch(arg customTypes.CmdArg) error {
+
+	args := arg.Args
+
+	resp, err := arg.AppConf.ApiClient.CacthPokemon(args[0])
+
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	const treshold int = 50
+
+	badFaith := rand.Intn(resp.BaseExperience)
+
+	if badFaith > treshold {
+		return fmt.Errorf("Failed To Catch Pokemon. %s escaped.", resp.Name)
+	}
+
+
+	fmt.Printf("Successfully catched a %s.\n", resp.Name)
 
 	return nil
 }

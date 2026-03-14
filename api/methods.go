@@ -128,3 +128,61 @@ func (c *Client) GetLocationArea(locId string) (LocationArea,error) {
 
 	return  loc, nil
 }
+
+func (c *Client) CacthPokemon(pokemonId string) (Pokemon, error) {
+	endPoint := "/pokemon/"
+
+	fullURL := baseURL + endPoint + pokemonId
+
+	cachedData, ok := c.Cache.Get(fullURL)
+
+	if ok {
+		fmt.Println("Cached Hit.")
+		pokemon := Pokemon{}
+
+		err := json.Unmarshal(cachedData, &pokemon)
+
+		if err != nil {
+			return Pokemon{}, err
+		}
+
+		return pokemon, nil
+	}
+
+	fmt.Println("Cache Miss.")
+
+	req, err := http.NewRequest("GET", fullURL, nil)
+
+	if err != nil {
+		return Pokemon{}, err
+	}
+
+	resp, err := c.HttpClient.Do(req)
+
+	if  err != nil {
+		return Pokemon{}, err
+	}
+
+	defer resp.Body.Close()
+
+	if resp.StatusCode > 399 {
+		return Pokemon{}, fmt.Errorf("Bad Status Code: %v", resp.StatusCode)
+	}
+
+	data, err := io.ReadAll(resp.Body) 
+
+	if err != nil {
+		return Pokemon{}, nil
+	}
+	pokemon := Pokemon{}
+
+	err = json.Unmarshal(data, &pokemon)	
+
+	if err != nil {
+		return Pokemon{}, err
+	}
+
+	c.Cache.Add(fullURL, data)
+
+	return pokemon, nil
+}

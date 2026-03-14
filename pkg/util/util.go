@@ -59,6 +59,12 @@ func GetCommands() map[string]customTypes.CliCommand {
 			CallBack: callback.CallbackExplore,
 			MaxArg: 1,
 		},
+		"catch": {
+			Name:  "catch {pokemonName}",
+			Desctiption: "Catch the pokemon",
+			CallBack: callback.CallbackCatch,
+			MaxArg: 1,
+		},
 	}
 }
 

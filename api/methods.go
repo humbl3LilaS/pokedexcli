@@ -72,8 +72,25 @@ func (c *Client) ListLocationAreas(url *string) (LocationAreaResp, error) {
 }
 
 func (c *Client) GetLocationArea(locId string) (LocationArea,error) {
+
 	endPoint := "/location-area/"
 	fullURL := baseURL + endPoint + locId
+
+	cachedData, ok := c.Cache.Get(fullURL)
+
+	// TODO: Extract the caching logic into generic
+	if ok {
+		fmt.Println("Cached Hit")
+		loc := LocationArea{}
+
+		err := json.Unmarshal(cachedData, &loc)
+
+		if err != nil {
+			return LocationArea{}, err
+		}
+	
+		return  loc, nil
+	}
 
 	req, err := http.NewRequest("GET", fullURL, nil)
 
@@ -99,16 +116,15 @@ func (c *Client) GetLocationArea(locId string) (LocationArea,error) {
 		return LocationArea{}, err
 	}
 
-	locationAreas := LocationArea{}
+	loc := LocationArea{}
 
-	err = json.Unmarshal(data, &locationAreas)
+	err = json.Unmarshal(data, &loc)
 
 	if err != nil {
 		return LocationArea{}, err
 	}
 	
-	// store the data in cache
-	// c.Cache.Add(fullURL, data)
+	c.Cache.Add(fullURL, data)
 
-	return  locationAreas, nil
+	return  loc, nil
 }
